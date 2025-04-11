@@ -15,7 +15,10 @@
             <h2 class="h5 text-success">Menu Items</h2>
             <p class="mb-0 text-muted small">Manage your restaurant's offerings</p>
           </div>
-          <button class="btn btn-success btn-sm gap-2 rounded-1 px-4 py-2">
+          <button
+            class="btn btn-success btn-sm gap-2 rounded-1 px-4 py-2"
+            @click="router.push({ name: APP_ROUTE_NAMES.CREATE_MENU_ITEM })"
+          >
             <i class="bi bi-plus-square"></i> &nbsp;
             <span>Add Item</span>
           </button>
@@ -33,28 +36,30 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr v-for="menuItem in menuItems" :key="menuItem.id">
                   <td class="ps-3">
                     <div class="d-flex align-items-center">
                       <img
-                        src="https://placehold.co/600x400"
+                        :src="CONFIG_IMAGE_URL + menuItem.image"
                         alt="Item"
                         class="rounded object-fit-cover me-2"
                         style="width: 50px; height: 50px"
                       />
                       <div>
-                        <div class="fw-semibold small">NAME</div>
+                        <div class="fw-semibold small">{{ menuItem.name }}</div>
                       </div>
                     </div>
                   </td>
                   <td>
                     <span class="badge bg-success bg-opacity-10 text-success small">
-                      CATEGORY
+                      {{ menuItem.category }}
                     </span>
                   </td>
-                  <td class="fw-semibold small">$$$</td>
+                  <td class="fw-semibold small">${{ menuItem.price.toFixed(2) }}</td>
                   <td>
-                    <span class="badge bg-info bg-opacity-10 text-info small"> TAG </span>
+                    <span class="badge bg-info bg-opacity-10 text-info small">
+                      {{ menuItem.specialTag }}
+                    </span>
                   </td>
                   <td class="pe-3 text-end">
                     <div class="d-flex gap-2 justify-content-end">
@@ -78,10 +83,12 @@
 <script setup>
 import menuitemService from '@/services/menuitemService.js'
 import { ref, onMounted, reactive } from 'vue'
-
+import { APP_ROUTE_NAMES } from '@/constants/routeNames'
+import { CONFIG_IMAGE_URL } from '@/constants/config'
+import { useRouter } from 'vue-router'
 const menuItems = reactive([])
 const loading = ref(false)
-
+const router = useRouter()
 const fetchMenuItems = async () => {
   loading.value = true
   try {
