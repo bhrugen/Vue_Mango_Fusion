@@ -66,14 +66,64 @@
               </li>
             </ul>
           </li>
+        </ul>
+        <ul class="navbar-nav ms-auto align-items-center small">
+          <li class="nav-item px-2">
+            <router-link
+              class="nav-link px-2 position-relative"
+              aria-current="page"
+              :to="{ name: APP_ROUTE_NAMES.CART }"
+              ><i class="bi bi-cart3"></i>
+              <span
+                class="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
+                >0</span
+              ></router-link
+            >
+          </li>
           <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            <router-link
+              class="nav-link"
+              aria-current="page"
+              :to="{ name: APP_ROUTE_NAMES.SIGN_IN }"
+              >Sign In</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              aria-current="page"
+              :to="{ name: APP_ROUTE_NAMES.SIGN_UP }"
+              >Sign Up</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <button class="nav-link px-2" aria-current="page">Logout</button>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="bi bi-laptop"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <button class="dropdown-item" aria-current="page">
+                  <i class="bi bi-sun"></i> Light
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" aria-current="page">
+                  <i class="bi bi-moon-fill"></i> Dark
+                </button>
+              </li>
+            </ul>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
       </div>
     </div>
   </nav>
