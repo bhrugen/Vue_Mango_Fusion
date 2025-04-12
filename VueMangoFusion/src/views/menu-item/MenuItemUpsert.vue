@@ -24,19 +24,30 @@
           </button>
         </div>
       </div>
-      <div class="alert alert-danger pb-0">
+      <div class="alert alert-danger pb-0" v-if="errorList.length > 0">
         Please fix the following errors:
         <ul>
-          <li>ERROR</li>
+          <li v-for="error in errorList" :key="error">{{ error }}</li>
         </ul>
       </div>
-      <form enctype="multipart/form-data" class="needs-validation" id="menuForm">
+      <form
+        enctype="multipart/form-data"
+        class="needs-validation"
+        id="menuForm"
+        @submit="onFormSubmit"
+      >
         <div class="row g-4">
           <div class="col-lg-7">
             <div class="d-flex flex-column g-12">
               <div class="mb-3">
                 <label for="name" class="form-label">Item Name</label>
-                <input id="name" type="text" class="form-control" placeholder="Enter item name" />
+                <input
+                  id="name"
+                  type="text"
+                  v-model="menuItemObj.name"
+                  class="form-control"
+                  placeholder="Enter item name"
+                />
               </div>
 
               <div class="mb-3">
@@ -46,6 +57,7 @@
                   class="form-control"
                   placeholder="Describe the menu item..."
                   rows="3"
+                  v-model="menuItemObj.description"
                 ></textarea>
               </div>
 
@@ -56,12 +68,13 @@
                   type="text"
                   class="form-control"
                   placeholder="e.g., Chef's Special"
+                  v-model="menuItemObj.specialTag"
                 />
               </div>
 
               <div class="mb-3">
                 <label for="category" class="form-label">Category</label>
-                <select id="category" class="form-select">
+                <select id="category" class="form-select" v-model="menuItemObj.category">
                   <option value="" selected disabled>--Select a category--</option>
                   <option v-for="category in CATEGROIES" :key="category">{{ category }}</option>
                 </select>
@@ -69,7 +82,7 @@
 
               <div class="mb-3">
                 <label for="price" class="form-label">Price</label>
-                <input id="price" class="form-control" />
+                <input id="price" class="form-control" v-model="menuItemObj.price" />
               </div>
             </div>
           </div>
@@ -101,7 +114,8 @@ import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
 import { CATEGROIES } from '@/constants/constants'
 const loading = ref(false)
-
+const isProcessing = ref(false)
+const errorList = reactive([])
 const menuItemObj = reactive({
   name: '',
   description: '',
@@ -113,4 +127,27 @@ const menuItemObj = reactive({
 
 const router = new useRouter()
 const route = new useRoute()
+
+const onFormSubmit = async (event) => {
+  event.preventDefault()
+  isProcessing.value = true
+  errorList.length = 0 //clear it
+
+  //validations
+  if (menuItemObj.name.length < 3) {
+    errorList.push('Name should be at least 3 char long.')
+  }
+  if (menuItemObj.price <= 0) {
+    errorList.push('Price should be greater than 0.')
+  }
+  if (menuItemObj.category === '') {
+    errorList.push('Category must be selected.')
+  }
+
+  if (!errorList.length) {
+    //no errors
+    console.log(menuItemObj)
+  }
+  isProcessing.value = false
+}
 </script>
