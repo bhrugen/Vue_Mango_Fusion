@@ -43,4 +43,18 @@ export default {
       throw error
     }
   },
+  async updateMenuItem(id, data) {
+    try {
+      const response = await api.put(`/menuItem?id=${id}`, data)
+
+      if (response.data.isSuccess) {
+        return response.data.result
+      } else {
+        throw new Error('Failed to update menu items')
+      }
+    } catch (error) {
+      console.error('Error updating menu items:', error)
+      throw error
+    }
+  },
 }
