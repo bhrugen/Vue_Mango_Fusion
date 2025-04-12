@@ -90,13 +90,20 @@
           <div class="col-lg-5">
             <div>
               <img
-                src=""
+                v-if="newUploadedImage_base64 != ''"
+                :src="newUploadedImage_base64 != '' ? newUploadedImage_base64 : menuItemObj.image"
                 class="img-fluid w-100 mb-3 rounded"
                 style="aspect-ratio: 1/1; object-fit: cover"
               />
               <div class="mb-3">
                 <label for="image" class="form-label">Item Image</label>
-                <input id="image" type="file" class="form-control" accept="image/*" />
+                <input
+                  id="image"
+                  type="file"
+                  class="form-control"
+                  accept="image/*"
+                  @change="handleFileChange"
+                />
                 <div class="form-text">Leave empty to keep existing image</div>
               </div>
             </div>
@@ -116,6 +123,9 @@ import { CATEGROIES } from '@/constants/constants'
 const loading = ref(false)
 const isProcessing = ref(false)
 const errorList = reactive([])
+const newUploadedImage = ref(null)
+const newUploadedImage_base64 = ref('')
+
 const menuItemObj = reactive({
   name: '',
   description: '',
@@ -127,6 +137,20 @@ const menuItemObj = reactive({
 
 const router = new useRouter()
 const route = new useRoute()
+
+const handleFileChange = (event) => {
+  isProcessing.value = true
+  const file = event.target.files[0]
+  newUploadedImage.value = file
+  if (file) {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      newUploadedImage_base64.value = e.target.result
+    }
+    reader.readAsDataURL(file)
+  }
+  isProcessing.value = false
+}
 
 const onFormSubmit = async (event) => {
   event.preventDefault()
