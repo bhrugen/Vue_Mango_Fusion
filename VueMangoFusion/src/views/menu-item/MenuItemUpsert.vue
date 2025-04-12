@@ -124,13 +124,15 @@ import { useRouter, useRoute } from 'vue-router'
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
 import { CATEGROIES } from '@/constants/constants'
-import menuitemService from '@/services/menuitemService'
+import menuitemService from '@/services/menuItemService'
+const router = new useRouter()
+const route = new useRoute()
 const loading = ref(false)
 const isProcessing = ref(false)
 const errorList = reactive([])
 const newUploadedImage = ref(null)
 const newUploadedImage_base64 = ref('')
-
+const menuItemIdForUpdate = route.params.id
 const menuItemObj = reactive({
   name: '',
   description: '',
@@ -140,8 +142,19 @@ const menuItemObj = reactive({
   image: '',
 })
 const formData = new FormData()
-const router = new useRouter()
-const route = new useRoute()
+
+onMounted(async () => {
+  if (!menuItemIdForUpdate) return
+  loading.value = true
+  try {
+    const result = await menuitemService.getMenuItemById(menuItemIdForUpdate)
+    Object.assign(menuItemObj, result)
+  } catch (err) {
+    console.log('Error while fetching menu item', err)
+  } finally {
+    loading.value = false
+  }
+})
 
 const handleFileChange = (event) => {
   isProcessing.value = true
