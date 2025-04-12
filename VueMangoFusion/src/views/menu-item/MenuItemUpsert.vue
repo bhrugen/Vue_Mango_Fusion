@@ -124,6 +124,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
 import { CATEGROIES } from '@/constants/constants'
+import menuitemService from '@/services/menuitemService'
 const loading = ref(false)
 const isProcessing = ref(false)
 const errorList = reactive([])
@@ -182,6 +183,16 @@ const onFormSubmit = async (event) => {
     Object.entries(menuItemObj).forEach(([key, value]) => {
       formData.append(key, value)
     })
+
+    menuitemService
+      .createMenuItem(formData)
+      .then(() => {
+        alert('menu item created')
+      })
+      .catch((err) => {
+        isProcessing.value = false
+        console.log('Create Failed', err)
+      })
     console.log(menuItemObj)
   }
   isProcessing.value = false
