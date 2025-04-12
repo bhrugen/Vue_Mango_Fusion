@@ -130,6 +130,8 @@ import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
 import { CATEGROIES } from '@/constants/constants'
 import menuitemService from '@/services/menuItemService'
+import { useSwal } from '@/composables/swal'
+const { showError, showSuccess, showConfirm } = useSwal()
 const router = new useRouter()
 const route = new useRoute()
 const loading = ref(false)
@@ -208,11 +210,12 @@ const onFormSubmit = async (event) => {
       menuitemService
         .createMenuItem(formData)
         .then(() => {
-          alert('menu item created')
+          showSuccess('Menu Item created successfully.')
           router.push({ name: APP_ROUTE_NAMES.MENU_ITEM_LIST })
         })
         .catch((err) => {
           isProcessing.value = false
+          showError('Menu Item create failed.')
           console.log('Create Failed', err)
         })
     } else {
@@ -220,11 +223,12 @@ const onFormSubmit = async (event) => {
       menuitemService
         .updateMenuItem(menuItemIdForUpdate, formData)
         .then(() => {
-          alert('menu item updated')
+          showSuccess('Menu Item updated successfully.')
           router.push({ name: APP_ROUTE_NAMES.MENU_ITEM_LIST })
         })
         .catch((err) => {
           isProcessing.value = false
+          showError('Menu Item update failed.')
           console.log('update Failed', err)
         })
     }
