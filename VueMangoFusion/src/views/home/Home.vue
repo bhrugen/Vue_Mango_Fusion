@@ -15,6 +15,7 @@
               >
                 <input
                   type="text"
+                  v-model="searchValue"
                   class="form-control border-0 py-3 px-4"
                   placeholder="Search your favorite foods..."
                 />
@@ -122,6 +123,7 @@ let menuItems = reactive([])
 const loading = ref(false)
 const selectedCategory = ref('ALL')
 const selectedSortOption = ref(SORT_OPTIONS[0])
+const searchValue = ref('')
 const router = useRouter()
 const categoryList = ref(['ALL', ...CATEGROIES])
 
@@ -138,6 +140,12 @@ const filteredItems = computed(() => {
       : menuItems.filter(
           (item) => item.category.toUpperCase() === selectedCategory.value.toUpperCase(),
         )
+
+  if (searchValue.value) {
+    tempArray = tempArray.filter((item) =>
+      item.name.toUpperCase().includes(searchValue.value.toUpperCase()),
+    )
+  }
 
   if (selectedSortOption.value == SORT_NAME_A_Z) {
     tempArray.sort((a, b) => a.name.localeCompare(b.name))
