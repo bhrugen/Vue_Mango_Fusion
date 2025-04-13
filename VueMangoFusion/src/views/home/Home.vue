@@ -58,12 +58,15 @@
               data-bs-toggle="dropdown"
             >
               <i class="bi bi-sort-down"></i>
-              <span class="fs-7">SORT OPTION</span>
+              <span class="fs-7">{{ selectedSortOption }}</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-3">
-              <li>
-                <button class="dropdown-item py-2 px-3 d-flex align-items-center gap-2">
-                  <span class="fs-7 px-3 mx-1">SORT</span>
+              <li v-for="(sort, index) in SORT_OPTIONS" :key="index">
+                <button
+                  class="dropdown-item py-2 px-3 d-flex align-items-center gap-2"
+                  @click="updateSelectedSortOption(sort)"
+                >
+                  <span class="fs-7 px-1 mx-1">{{ sort }}</span>
                 </button>
               </li>
             </ul>
@@ -106,18 +109,28 @@ import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
 import { useSwal } from '@/composables/swal'
 import { useRouter } from 'vue-router'
-import { CATEGROIES } from '@/constants/constants'
+import {
+  CATEGROIES,
+  SORT_NAME_A_Z,
+  SORT_NAME_Z_A,
+  SORT_OPTIONS,
+  SORT_PRICE_HIGH_LOW,
+  SORT_PRICE_LOW_HIGH,
+} from '@/constants/constants'
 const { showConfirm, showError, showSuccess } = useSwal()
 let menuItems = reactive([])
 const loading = ref(false)
 const selectedCategory = ref('ALL')
+const selectedSortOption = ref(SORT_OPTIONS[0])
 const router = useRouter()
 const categoryList = ref(['ALL', ...CATEGROIES])
 
 function updateSelectedCategory(category) {
   selectedCategory.value = category
 }
-
+function updateSelectedSortOption(sort) {
+  selectedSortOption.value = sort
+}
 const filteredItems = computed(() => {
   let tempArray =
     selectedCategory.value == 'ALL'
@@ -125,6 +138,19 @@ const filteredItems = computed(() => {
       : menuItems.filter(
           (item) => item.category.toUpperCase() === selectedCategory.value.toUpperCase(),
         )
+
+  if (selectedSortOption.value == SORT_NAME_A_Z) {
+    tempArray.sort((a, b) => a.name.localeCompare(b.name))
+  }
+  if (selectedSortOption.value == SORT_NAME_Z_A) {
+    tempArray.sort((a, b) => b.name.localeCompare(a.name))
+  }
+  if (selectedSortOption.value == SORT_PRICE_LOW_HIGH) {
+    tempArray.sort((a, b) => a.price - b.price)
+  }
+  if (selectedSortOption.value == SORT_PRICE_HIGH_LOW) {
+    tempArray.sort((a, b) => b.price - a.price)
+  }
 
   return tempArray
 })
