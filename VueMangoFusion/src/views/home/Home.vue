@@ -82,8 +82,9 @@
         </div>
       </div>
       <div v-else>
-        <div class="row" v-if="filteredItems.length && filteredItems.length > 0">
+        <div class="row">
           <MenuItemCard
+            v-if="filteredItems.length && filteredItems.length > 0"
             v-for="(item, index) in filteredItems"
             :key="item.id"
             class="list-item col-12 col-md-6 col-lg-4 pb-4"
@@ -119,13 +120,13 @@ import {
   SORT_PRICE_LOW_HIGH,
 } from '@/constants/constants'
 const { showConfirm, showError, showSuccess } = useSwal()
-let menuItems = reactive([])
+const menuItems = reactive([])
 const loading = ref(false)
 const selectedCategory = ref('ALL')
 const selectedSortOption = ref(SORT_OPTIONS[0])
 const searchValue = ref('')
 const router = useRouter()
-const categoryList = ref(['ALL', ...CATEGROIES])
+const categoryList = reactive(['ALL', ...CATEGROIES])
 
 function updateSelectedCategory(category) {
   selectedCategory.value = category
