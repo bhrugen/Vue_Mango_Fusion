@@ -103,6 +103,7 @@ const menuItems = reactive([])
 const loading = ref(false)
 const router = useRouter()
 const fetchMenuItems = async () => {
+  menuItems.length = 0
   loading.value = true
   try {
     var result = await menuitemService.getMenuItems()
@@ -120,6 +121,7 @@ const handleMenuItemDelete = async (id) => {
   loading.value = true
   try {
     const confirmResult = await showConfirm('Are you sure you want to delete this MenuItem?')
+    console.log(confirmResult)
     if (confirmResult.isConfirmed) {
       await menuitemService.deleteMenuItem(id)
       showSuccess('Menu Item delete sccucessfully')
