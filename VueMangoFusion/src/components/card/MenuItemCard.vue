@@ -3,7 +3,7 @@
     <div class="card h-100 border-0 shadow-sm rounded-4">
       <div class="position-relative">
         <img
-          src="https://placehold.co/300x200"
+          :src="CONFIG_IMAGE_URL + menuItem.image"
           class="card-img-top rounded-top-4 w-100 object-fit-cover"
           style="height: 200px"
         />
@@ -24,24 +24,27 @@
         <div class="d-flex justify-content-between align-items-start mb-2">
           <h5 class="card-title mb-0 small fw-semibold">{{ menuItem.name }}</h5>
           <div class="d-flex align-items-center ms-2">
-            <span class="fw-semibold text-success">$$$</span>
+            <span class="fw-semibold text-success">${{ menuItem.price.toFixed(2) }}</span>
           </div>
         </div>
 
         <!-- Description -->
         <p class="card-text text-body-secondary small mb-2 text-truncate d-none d-sm-block">
-          DESCRIPTION
+          {{ menuItem.description }}
         </p>
 
         <!-- Tags -->
         <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-          <div class="d-flex align-items-center btn btn-outline-secondary disabled px-2 py-1 small">
+          <div
+            class="d-flex align-items-center btn btn-outline-secondary disabled px-2 py-1 small"
+            v-if="menuItem.specialTag"
+          >
             <i class="bi bi-star"></i>&nbsp;
-            <span class="small text-body-secondary"> TAG</span>
+            <span class="small text-body-secondary"> {{ menuItem.specialTag }}</span>
           </div>
           <div class="d-flex align-items-center btn btn-outline-secondary disabled px-2 py-1 small">
             <i class="bi bi-tag-fill"></i> &nbsp;
-            <span class="small text-body-secondary text-uppercase">CATEGORY</span>
+            <span class="small text-body-secondary text-uppercase">{{ menuItem.category }}</span>
           </div>
         </div>
 
@@ -72,6 +75,7 @@
   </div>
 </template>
 <script setup>
+import { CONFIG_IMAGE_URL } from '@/constants/config'
 const props = defineProps({
   menuItem: Object,
 })
