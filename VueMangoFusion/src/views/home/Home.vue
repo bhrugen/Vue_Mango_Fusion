@@ -1,1 +1,103 @@
-<template>Home</template>
+<template>
+  <div>
+    <div class="position-relative overflow-hidden mb-4">
+      <div class="hero-section position-relative py-5 rounded-4" style="min-height: 400px">
+        <div class="container position-relative z-3">
+          <div class="row justify-content-center text-center">
+            <div class="col-lg-8 col-xl-7">
+              <h1 class="display-4 fw-bold text-white mb-4">
+                Unlock the Art of Flavor<br class="d-none d-lg-block" />
+                <span class="text-success-emphasis">Your Culinary Journey Begins Here!</span>
+              </h1>
+              <div
+                class="input-group mx-auto shadow-lg rounded-pill overflow-hidden"
+                style="max-width: 600px"
+              >
+                <input
+                  type="text"
+                  class="form-control border-0 py-3 px-4"
+                  placeholder="Search your favorite foods..."
+                />
+                <button class="btn btn-success px-4 d-flex align-items-center border-0">
+                  <i class="bi bi-search"></i>
+                  <span class="ms-2 d-none d-sm-inline">Search</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container px-0 mx-0">
+      <!-- Filters Section -->
+      <div class="row g-3 my-4 border align-items-center shadow-sm rounded-4 mx-1 pt-1 p-3">
+        <!-- Categories -->
+        <div class="col-lg-auto">
+          <div class="d-flex flex-wrap gap-2">
+            <button class="btn rounded px-4 py-2 fs-7 position-relative overflow-hidden">
+              <span class="position-relative z-1">CATEGORY</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-lg-auto order-1 order-lg-2 ms-lg-auto">
+          <div class="dropdown">
+            <button
+              class="btn btn-outline-success rounded px-3 py-2 dropdown-toggle d-flex align-items-center gap-2"
+              type="button"
+              data-bs-toggle="dropdown"
+            >
+              <i class="bi bi-sort-down"></i>
+              <span class="fs-7">SORT OPTION</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-3">
+              <li>
+                <button class="dropdown-item py-2 px-3 d-flex align-items-center gap-2">
+                  <span class="fs-7 px-3 mx-1">SORT</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Section -->
+      <div class="text-center py-5">
+        <div class="spinner-border text-success" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div>
+        <div class="row">
+          <MenuItemCard class="list-item col-12 col-md-6 col-lg-4 pb-4"></MenuItemCard>
+
+          <div class="text-center py-5 display-4 mx-auto text-body-secondary mb-3 d-block">
+            <i class="bi bi-emoji-frown"></i>
+            <p class="lead text-body-secondary">No menu items found matching your criteria</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menu Detail Modal -->
+  </div>
+</template>
+
+<script setup>
+import MenuItemCard from '@/components/card/MenuItemCard.vue'
+</script>
+
+<style scoped>
+.hero-section {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('/src/assets/hero.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.text-success-emphasis {
+  color: #75e792 !important;
+  font-weight: 400 !important;
+}
+</style>
