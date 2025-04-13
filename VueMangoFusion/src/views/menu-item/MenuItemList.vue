@@ -118,11 +118,11 @@ const fetchMenuItems = async () => {
 onMounted(fetchMenuItems)
 
 const handleMenuItemDelete = async (id) => {
-  loading.value = true
   try {
     const confirmResult = await showConfirm('Are you sure you want to delete this MenuItem?')
     console.log(confirmResult)
     if (confirmResult.isConfirmed) {
+      loading.value = true
       await menuitemService.deleteMenuItem(id)
       showSuccess('Menu Item delete sccucessfully')
       fetchMenuItems()
