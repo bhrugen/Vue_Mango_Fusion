@@ -100,10 +100,12 @@
     </div>
 
     <!-- Menu Detail Modal -->
+    <MenuItemDetailsModal></MenuItemDetailsModal>
   </div>
 </template>
 
 <script setup>
+import MenuItemDetailsModal from '@/components/modals/MenuItemDetailsModal.vue'
 import MenuItemCard from '@/components/card/MenuItemCard.vue'
 import menuItemService from '@/services/menuItemService.js'
 import { ref, onMounted, reactive, computed } from 'vue'
