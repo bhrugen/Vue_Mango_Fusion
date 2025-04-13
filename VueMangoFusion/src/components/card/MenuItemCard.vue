@@ -22,7 +22,7 @@
       <div class="card-body p-3 p-sm-4">
         <!-- Title and Price -->
         <div class="d-flex justify-content-between align-items-start mb-2">
-          <h5 class="card-title mb-0 small fw-semibold">NAME</h5>
+          <h5 class="card-title mb-0 small fw-semibold">{{ menuItem.name }}</h5>
           <div class="d-flex align-items-center ms-2">
             <span class="fw-semibold text-success">$$$</span>
           </div>
@@ -71,3 +71,8 @@
     </div>
   </div>
 </template>
+<script setup>
+const props = defineProps({
+  menuItem: Object,
+})
+</script>

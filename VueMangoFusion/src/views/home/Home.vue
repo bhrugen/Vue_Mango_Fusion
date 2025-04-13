@@ -69,8 +69,13 @@
         </div>
       </div>
       <div>
-        <div class="row">
-          <MenuItemCard class="list-item col-12 col-md-6 col-lg-4 pb-4"></MenuItemCard>
+        <div class="row" v-if="menuItems.length && menuItems.length > 0">
+          <MenuItemCard
+            v-for="(item, index) in menuItems"
+            :key="item.id"
+            class="list-item col-12 col-md-6 col-lg-4 pb-4"
+            :menuItem="item"
+          ></MenuItemCard>
 
           <div class="text-center py-5 display-4 mx-auto text-body-secondary mb-3 d-block">
             <i class="bi bi-emoji-frown"></i>
@@ -86,6 +91,30 @@
 
 <script setup>
 import MenuItemCard from '@/components/card/MenuItemCard.vue'
+import menuItemService from '@/services/menuItemService.js'
+import { ref, onMounted, reactive } from 'vue'
+import { APP_ROUTE_NAMES } from '@/constants/routeNames'
+import { CONFIG_IMAGE_URL } from '@/constants/config'
+import { useSwal } from '@/composables/swal'
+import { useRouter } from 'vue-router'
+const { showConfirm, showError, showSuccess } = useSwal()
+const menuItems = reactive([])
+const loading = ref(false)
+const router = useRouter()
+const fetchMenuItems = async () => {
+  menuItems.length = 0
+  loading.value = true
+  try {
+    var result = await menuItemService.getMenuItems()
+    menuItems.push(...result)
+  } catch (error) {
+    console.log('Error fetch menu items:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(fetchMenuItems)
 </script>
 
 <style scoped>
