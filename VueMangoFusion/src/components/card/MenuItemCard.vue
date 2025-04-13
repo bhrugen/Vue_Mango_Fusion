@@ -55,7 +55,7 @@
             <span class="small"><i class="bi bi-cart-plus"></i> &nbsp; Add to Cart</span>
           </button>
 
-          <div class="input-group input-group-sm w-100">
+          <div class="input-group input-group-sm w-100" v-show="false">
             <button class="btn btn-outline-secondary" type="button">
               <i class="bi bi-dash"></i>
             </button>
