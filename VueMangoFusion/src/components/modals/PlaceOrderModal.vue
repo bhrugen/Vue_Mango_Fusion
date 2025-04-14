@@ -17,7 +17,7 @@
         <span class="d-block" v-for="error in errorList" :key="error"> {{ error }} </span>
       </div>
 
-      <form>
+      <form @submit.prevent="submitOrder">
         <div class="mb-3">
           <label for="pickupName" class="form-label">Name</label>
           <input v-model="orderData.pickUpName" type="text" class="form-control" id="pickupName" />
@@ -113,5 +113,30 @@ const emit = defineEmits(['close'])
 
 const closeModal = () => {
   emit('close')
+}
+
+const submitOrder = async () => {
+  try {
+    isSubmitting.value = true
+    errorList.length = 0
+    if (orderData.pickUpName === undefined || orderData.pickUpName.length === 0) {
+      errorList.push('Name is required.')
+    }
+    if (orderData.pickUpEmail === undefined || orderData.pickUpEmail.length === 0) {
+      errorList.push('Email is required.')
+    }
+    if (orderData.pickUpPhoneNumber === undefined || orderData.pickUpPhoneNumber.length === 0) {
+      errorList.push('Phone Number is required.')
+    }
+    if (errorList.length > 0) {
+      isSubmitting.value = false
+      return
+    }
+    //place order
+  } catch (err) {
+    errorList.push(err.message)
+  } finally {
+    isSubmitting.value = false
+  }
 }
 </script>
