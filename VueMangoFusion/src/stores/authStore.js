@@ -30,7 +30,7 @@ export const useAuthStore = defineStore('authStore', () => {
     return {
       email: payload.email,
       role: payload.role,
-      name: payload.name,
+      name: payload.fullname,
       id: payload.id,
     }
   }
