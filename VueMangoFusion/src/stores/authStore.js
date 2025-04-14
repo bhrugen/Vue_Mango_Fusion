@@ -36,10 +36,14 @@ export const useAuthStore = defineStore('authStore', () => {
     }
   }
 
-  async function signIn(userData) {
+  async function signIn(formObj) {
     try {
-      const response = await authService.signIn(userData)
-      console.log(response)
+      const { token, user: userData } = await authService.signIn(formObj)
+      Object.assign(user, userData)
+      user.isLoggedIn = true
+      isAuthenticated.value = true
+
+      router.push('/')
       //const { showSuccess } = useSwal()
       //showSuccess('Registeration Successful')
       //router.push({ name: APP_ROUTE_NAMES.SIGN_IN })
