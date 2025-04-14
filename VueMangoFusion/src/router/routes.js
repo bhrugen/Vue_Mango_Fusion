@@ -52,28 +52,33 @@ const router = createRouter({
       path: '/admin/manage-menu-items/create',
       name: APP_ROUTE_NAMES.CREATE_MENU_ITEM,
       component: MenuItemUpsert,
+      beforeEnter: [requireAdmin],
     },
     {
       path: '/admin/manage-menu-items/update/:id',
       name: APP_ROUTE_NAMES.EDIT_MENU_ITEM,
       component: MenuItemUpsert,
       props: true,
+      beforeEnter: [requireAdmin],
     },
     {
       path: '/admin/order-confirmation/:orderId',
       name: APP_ROUTE_NAMES.ORDER_CONFIRM,
       component: OrderConfirmation,
       props: true,
+      beforeEnter: [requireAuth],
     },
     {
       path: '/order-list',
       name: APP_ROUTE_NAMES.ORDER_LIST,
       component: OrderHistoryList,
+      beforeEnter: [requireAuth],
     },
     {
       path: '/admin/order-management',
       name: APP_ROUTE_NAMES.MANAGE_ORDER_ADMIN,
       component: OrderManagement,
+      beforeEnter: [requireAdmin],
     },
     {
       path: '/:catchAll(.*)',
