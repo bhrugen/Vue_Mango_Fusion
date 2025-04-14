@@ -97,7 +97,9 @@
             >
           </li>
           <li class="nav-item" v-if="authStore.isAuthenticated">
-            <button class="nav-link px-2" aria-current="page">Logout</button>
+            <button class="nav-link px-2" aria-current="page" @click="authStore.signOut()">
+              Logout
+            </button>
           </li>
 
           <li class="nav-item dropdown">
