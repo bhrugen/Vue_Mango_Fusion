@@ -45,7 +45,7 @@ export const useCartStore = defineStore('cartStore', () => {
   }
 
   function clearCart() {
-    cartItems = []
+    cartItems.length = 0
   }
 
   return {
