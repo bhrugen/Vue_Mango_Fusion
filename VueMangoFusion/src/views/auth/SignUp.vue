@@ -6,27 +6,32 @@
           <div class="card-body p-4">
             <h2 class="text-center mb-4">Sign Up</h2>
 
-            <form>
+            <form @submit.prevent="onSignUpSubmit">
               <div class="mb-3">
                 <label for="name" class="form-label">Full Name</label>
-                <input type="text" class="form-control" id="name" />
+                <input type="text" class="form-control" id="name" v-model="formObj.name" />
               </div>
 
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" />
+                <input type="email" class="form-control" id="email" v-model="formObj.email" />
               </div>
 
               <div class="mb-3">
                 <label for="role" class="form-label">Role</label>
-                <select class="form-select" id="role">
+                <select class="form-select" id="role" v-model="formObj.role">
                   <option v-for="role in ROLES" :key="role">{{ role }}</option>
                 </select>
               </div>
 
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" />
+                <input
+                  type="password"
+                  class="form-control"
+                  v-model="formObj.password"
+                  id="password"
+                />
               </div>
 
               <div class="alert alert-danger" v-if="errorList.length > 0">
@@ -65,4 +70,30 @@ const formObj = reactive({
 const isLoading = ref(false)
 
 const errorList = reactive([])
+
+const onSignUpSubmit = async () => {
+  isLoading.value = true
+  errorList.length = 0
+  console.log(formObj)
+  if (formObj.name === undefined || formObj.name.length === 0) {
+    errorList.push('Name is required.')
+  }
+  if (formObj.email === undefined || formObj.email.length === 0) {
+    errorList.push('Email is required.')
+  }
+  if (formObj.password === undefined || formObj.password.length === 0) {
+    errorList.push('Password is required.')
+  }
+  if (errorList.length > 0) {
+    isLoading.value = false
+    return
+  }
+
+  try {
+  } catch (err) {
+    errorList.push(err)
+  } finally {
+    isLoading.value = false
+  }
+}
 </script>
