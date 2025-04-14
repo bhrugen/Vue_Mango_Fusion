@@ -13,6 +13,7 @@
             class="btn btn-light btn-sm rounded shadow-sm d-flex align-items-center gap-2 backdrop-blur-sm bg-opacity-75"
             title="View Details"
             style="backdrop-filter: blur(4px)"
+            @click="emit('showDetails', menuItem)"
           >
             <i class="bi bi-eye text-success"></i>
             <span class="text-success small">Details</span>
@@ -76,6 +77,7 @@
 </template>
 <script setup>
 import { CONFIG_IMAGE_URL } from '@/constants/config'
+const emit = defineEmits(['showDetails'])
 const props = defineProps({
   menuItem: Object,
 })

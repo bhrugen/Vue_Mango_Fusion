@@ -89,6 +89,7 @@
             :key="item.id"
             class="list-item col-12 col-md-6 col-lg-4 pb-4"
             :menuItem="item"
+            @show-details="handleShowDetails"
           ></MenuItemCard>
 
           <div class="text-center py-5 display-4 mx-auto text-body-secondary mb-3 d-block">
@@ -100,7 +101,11 @@
     </div>
 
     <!-- Menu Detail Modal -->
-    <MenuItemDetailsModal></MenuItemDetailsModal>
+    <MenuItemDetailsModal
+      :show="showModal"
+      :menuItem="selectedMenuItem"
+      @close="handleCloseDetailsModal"
+    ></MenuItemDetailsModal>
   </div>
 </template>
 
@@ -129,6 +134,18 @@ const selectedSortOption = ref(SORT_OPTIONS[0])
 const searchValue = ref('')
 const router = useRouter()
 const categoryList = reactive(['ALL', ...CATEGROIES])
+const showModal = ref(false)
+const selectedMenuItem = ref(null)
+
+const handleShowDetails = (menuItem) => {
+  selectedMenuItem.value = menuItem
+  showModal.value = true
+}
+
+const handleCloseDetailsModal = (menuItem) => {
+  selectedMenuItem.value = null
+  showModal.value = false
+}
 
 function updateSelectedCategory(category) {
   selectedCategory.value = category

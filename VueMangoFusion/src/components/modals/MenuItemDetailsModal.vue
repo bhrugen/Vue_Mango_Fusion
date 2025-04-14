@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="show"
     class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-black bg-opacity-50"
     style="z-index: 1050"
   >
@@ -18,7 +19,12 @@
             <i class="bi bi-card-heading"></i>
             <span>Menu Details</span>
           </h5>
-          <button type="button" class="btn-close" aria-label="Close menu details"></button>
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close menu details"
+            @click="handleClose"
+          ></button>
         </div>
 
         <!-- Body - Scrollable Content -->
@@ -95,7 +101,11 @@
 
         <!-- Footer -->
         <div class="modal-footer border-0 px-3 px-sm-4 pb-3 pb-sm-4 sticky-bottom bg-body">
-          <button type="button" class="btn btn-outline-secondary rounded-pill px-3 px-sm-4 w-100">
+          <button
+            type="button"
+            @click="handleClose"
+            class="btn btn-outline-secondary rounded-pill px-3 px-sm-4 w-100"
+          >
             Close
           </button>
         </div>
@@ -103,6 +113,19 @@
     </div>
   </div>
 </template>
+
+<script setup>
+const props = defineProps({
+  show: Boolean,
+  menuItem: Object,
+})
+
+const emit = defineEmits(['close'])
+
+const handleClose = () => {
+  emit('close')
+}
+</script>
 
 <style scoped>
 /* In your scoped or global styles */
