@@ -139,7 +139,7 @@
               <div
                 class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2 mb-3"
               >
-                <button class="btn btn-success flex-fill">
+                <button class="btn btn-success flex-fill" :disabled="">
                   <i class="bi bi-clock me-1"></i>
                   <span class="small">Confirmed</span>
                 </button>
@@ -185,6 +185,7 @@ import {
   ORDER_STATUS_CONFIRMED,
   ORDER_STATUS_READY_FOR_PICKUP,
 } from '@/constants/constants'
+import orderService from '@/services/orderService'
 
 const props = defineProps({
   order: {
@@ -219,5 +220,47 @@ const formatDate = (dateString) => {
     hour: '2-digit',
     minute: '2-digit',
   })
+}
+
+const updateStatus = async (newStatus) => {
+  try {
+    await orderService.updateOrder(props.order.orderHeaderId, {
+      orderHeaderId: props.order.orderHeaderId,
+      status: newStatus,
+    })
+  } catch (error) {
+    console.error('Error updating status', error)
+  }
+}
+
+const isStatusDisabled = (status) => {
+  const statusOrder = [
+    ORDER_STATUS_CONFIRMED,
+    ORDER_STATUS_READY_FOR_PICKUP,
+    ORDER_STATUS_COMPLETED,
+    ORDER_STATUS_CANCELLED,
+  ]
+
+  const currentIndex = statusOrder.indexOf(props.order.status)
+  const targetIndex = statusOrder.indexOf(status)
+
+  if (targetIndex <= currentIndex) {
+    return true
+  }
+
+  // Can't skip from Confirmed directly to Completed
+  if (props.order.status === ORDER_STATUS_CONFIRMED && status === ORDER_STATUS_COMPLETED) {
+    return true
+  }
+
+  //cannot cancel a completed order
+  if (props.order.status === ORDER_STATUS_COMPLETED && status === ORDER_STATUS_CANCELLED) {
+    return true
+  }
+  if (props.order.status === ORDER_STATUS_CANCELLED && status === ORDER_STATUS_CANCELLED) {
+    return true
+  }
+
+  return false
 }
 </script>
