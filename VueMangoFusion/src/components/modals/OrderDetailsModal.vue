@@ -15,7 +15,7 @@
           >
             <div class="d-flex align-items-center">
               <i class="bi bi-receipt-cutoff pe-1 text-success"></i>
-              <h5 class="mb-0 fs-5 text-success">Order #</h5>
+              <h5 class="mb-0 fs-5 text-success">Order #{{ order.orderHeaderId }}</h5>
             </div>
             <button
               @click="closeModal"
@@ -29,9 +29,19 @@
           >
             <div class="d-flex align-items-center">
               <i class="bi bi-calendar pe-1"></i>
-              <span class="text-body-secondary small">DATE</span>
+              <span class="text-body-secondary small">{{ formatDate(order.orderDate) }}</span>
             </div>
-            <span> STATUS </span>
+            <span
+              class="badge rounded-pill px-3 py-2"
+              :class="{
+                'bg-warning-subtle text-warning-emphasis': order.status === ORDER_STATUS_CONFIRMED,
+                'bg-info-subtle text-info-emphasis': order.status === ORDER_STATUS_READY_FOR_PICKUP,
+                'bg-success-subtle text-success-emphasis': order.status === ORDER_STATUS_COMPLETED,
+                'bg-danger-subtle text-danger-emphasis': order.status === ORDER_STATUS_CANCELLED,
+              }"
+            >
+              {{ order.status }}
+            </span>
           </div>
         </div>
 
@@ -47,15 +57,15 @@
                   <div class="d-flex flex-column gap-2">
                     <div class="d-flex align-items-center">
                       <i class="bi bi-person-fill pe-1"></i>
-                      <span class="small">NAME</span>
+                      <span class="small">{{ order.pickUpName }}</span>
                     </div>
                     <div class="d-flex align-items-center">
                       <i class="bi bi-telephone-fill pe-1"></i>
-                      <span class="small">PHONE</span>
+                      <span class="small">{{ order.pickUpPhoneNumber }}</span>
                     </div>
                     <div class="d-flex align-items-center">
                       <i class="bi bi-envelope pe-1"></i>
-                      <span class="small text-break">EMAIL</span>
+                      <span class="small text-break">{{ order.pickUpEmail }}</span>
                     </div>
                   </div>
                 </div>
@@ -72,11 +82,11 @@
                   <div class="d-flex flex-column gap-2">
                     <div class="d-flex justify-content-between align-items-center">
                       <span class="text-body-secondary small">Total Items</span>
-                      <span class="fw-bold">QTY</span>
+                      <span class="fw-bold">{{ order.totalItem }}</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                       <span class="text-body-secondary small">Total Amount</span>
-                      <span class="fw-bold text-success">$TOTAL</span>
+                      <span class="fw-bold text-success">${{ order.orderTotal.toFixed(2) }}</span>
                     </div>
                   </div>
                 </div>
@@ -92,21 +102,27 @@
                 <h6 class="card-title mb-0">Order Items</h6>
               </div>
               <div class="table-responsive">
-                <template>
+                <template v-if="order.orderDetails?.length">
                   <div
+                    v-for="item in order.orderDetails"
+                    :key="item.orderDetailsId"
                     class="d-flex justify-content-between align-items-center py-2 border-bottom gap-3"
                   >
                     <div class="d-flex align-items-center flex-grow-1 min-width-0">
                       <i class="bi bi-dash"></i>
-                      <span class="text-truncate small">NAME</span>
+                      <span class="text-truncate small">{{ item.menuItem.name }}</span>
                     </div>
                     <div class="d-flex align-items-center gap-2 flex-shrink-0">
-                      <span class="badge bg-success-subtle text-success">QTY x</span>
-                      <span class="text-body-secondary small">$PRICE </span>
+                      <span class="badge bg-success-subtle text-success"
+                        >{{ item.quantity }} x</span
+                      >
+                      <span class="text-body-secondary small">${{ item.price }} </span>
                     </div>
                   </div>
                 </template>
-                <div class="text-center text-body-secondary py-3 small">No items in this order</div>
+                <div v-else class="text-center text-body-secondary py-3 small">
+                  No items in this order
+                </div>
               </div>
             </div>
           </div>
@@ -161,19 +177,28 @@
 </template>
 
 <script setup>
+import { APP_ROUTE_NAMES } from '@/constants/routeNames'
+import {
+  ORDER_STATUS,
+  ORDER_STATUS_CANCELLED,
+  ORDER_STATUS_COMPLETED,
+  ORDER_STATUS_CONFIRMED,
+  ORDER_STATUS_READY_FOR_PICKUP,
+} from '@/constants/constants'
+
 const props = defineProps({
   order: {
     type: Object,
     required: false,
     default: () => ({
       orderHeaderId: '',
-      pickupName: '',
-      pickupPhoneNumber: '',
-      pickupEmail: '',
+      pickUpName: '',
+      pickUpPhoneNumber: '',
+      pickUpEmail: '',
       status: '',
       orderTotal: 0,
       orderDate: '',
-      totalItems: 0,
+      totalItem: 0,
       orderDetails: [],
     }),
   },
@@ -181,5 +206,18 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 const closeModal = () => {
   emit('close')
+}
+
+const formatDate = (dateString) => {
+  if (!dateString) return 'N/A'
+
+  const date = new Date(dateString)
+  return date.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 }
 </script>
