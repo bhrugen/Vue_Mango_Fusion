@@ -120,10 +120,12 @@
         </div>
       </div>
     </div>
+    <PlaceOrderModal></PlaceOrderModal>
   </div>
 </template>
 
 <script setup>
+import PlaceOrderModal from '@/components/modals/PlaceOrderModal.vue'
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
 import { computed, ref } from 'vue'
