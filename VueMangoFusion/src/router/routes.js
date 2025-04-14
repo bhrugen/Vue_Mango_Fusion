@@ -11,6 +11,7 @@ import OrderManagement from '@/views/order/OrderManagement.vue'
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 import { createRouter, createWebHistory } from 'vue-router'
 import NoAccess from '@/views/auth/NoAccess.vue'
+import { requireAuth, requireAdmin } from './guards'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,11 +40,13 @@ const router = createRouter({
       path: '/cart',
       name: APP_ROUTE_NAMES.CART,
       component: ShoppingCart,
+      beforeEnter: [requireAuth],
     },
     {
       path: '/admin/manage-menu-items',
       name: APP_ROUTE_NAMES.MENU_ITEM_LIST,
       component: MenuItemList,
+      beforeEnter: [requireAdmin],
     },
     {
       path: '/admin/manage-menu-items/create',
