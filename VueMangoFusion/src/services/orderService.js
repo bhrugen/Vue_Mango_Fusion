@@ -39,7 +39,7 @@ export default {
         pickUpName: orderData.pickUpName,
         pickUpPhoneNumber: orderData.pickUpPhoneNumber,
         pickUpEmail: orderData.pickUpEmail,
-        applicationUserId: orderData.userId,
+        applicationUserId: orderData.applicationUserId,
         orderTotal: orderData.orderTotal,
         totalItem: orderData.totalItem,
         orderDetailsDTO: orderData.orderDetailsDTO,
