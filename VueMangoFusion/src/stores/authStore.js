@@ -4,6 +4,7 @@ import authService from '@/services/authService'
 import router from '@/router/routes'
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 import { useSwal } from '@/composables/swal'
+import Cookies from 'js-cookie'
 export const useAuthStore = defineStore('authStore', () => {
   //state
   const user = reactive({
@@ -42,6 +43,8 @@ export const useAuthStore = defineStore('authStore', () => {
       Object.assign(user, userData)
       user.isLoggedIn = true
       isAuthenticated.value = true
+
+      Cookies.set('token_mango', token, { expires: 7 })
 
       router.push('/')
       //const { showSuccess } = useSwal()
