@@ -33,7 +33,12 @@
       <div class="row mt-2">
         <div class="col-md-8 mb-3">
           <label class="form-label">Search</label>
-          <input type="text" class="form-control" placeholder="Search by name, email or phone" />
+          <input
+            v-model="searchQuery"
+            type="text"
+            class="form-control"
+            placeholder="Search by name, email or phone"
+          />
         </div>
         <div class="col-md-4 mb-3 d-flex align-items-end">
           <button class="btn btn-outline-secondary w-100">Reset Filters</button>
@@ -182,6 +187,16 @@ const filteredOrders = computed(() => {
   if (statusFilter.value) {
     result = result.filter(
       (order) => order.status.toUpperCase() === statusFilter.value.toUpperCase(),
+    )
+  }
+
+  if (searchQuery.value) {
+    const query = searchQuery.value.toUpperCase()
+    result = result.filter(
+      (order) =>
+        order.pickUpEmail.toUpperCase().includes(query) ||
+        order.pickUpName.toUpperCase().includes(query) ||
+        order.pickUpPhoneNumber.toUpperCase().includes(query),
     )
   }
 
