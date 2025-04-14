@@ -13,40 +13,54 @@
         <button class="btn" @click="closeModal"><i class="bi bi-x-circle"></i></button>
       </div>
 
-      <div class="alert alert-danger" role="alert">
-        <span class="d-block"> ERROR </span>
+      <div v-if="errorList.length > 0" class="alert alert-danger" role="alert">
+        <span class="d-block" v-for="error in errorList" :key="error"> {{ error }} </span>
       </div>
 
       <form>
         <div class="mb-3">
           <label for="pickupName" class="form-label">Name</label>
-          <input type="text" class="form-control" id="pickupName" />
+          <input v-model="orderData.pickUpName" type="text" class="form-control" id="pickupName" />
         </div>
 
         <div class="mb-3">
           <label for="pickupPhoneNumber" class="form-label">Phone Number</label>
-          <input type="tel" class="form-control" id="pickupPhoneNumber" />
+          <input
+            v-model="orderData.pickUpPhoneNumber"
+            type="tel"
+            class="form-control"
+            id="pickupPhoneNumber"
+          />
         </div>
 
         <div class="mb-4">
           <label for="pickupEmail" class="form-label">Email</label>
-          <input type="email" class="form-control" id="pickupEmail" />
+          <input
+            v-model="orderData.pickUpEmail"
+            type="email"
+            class="form-control"
+            id="pickupEmail"
+          />
         </div>
 
         <div class="bg-body-tertiary rounded-3 p-3 mb-4">
           <h5 class="fw-bold mb-3">Order Summary</h5>
-          <div>
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="fw-medium">NAME</span>
+          <div v-if="cartStore.cartItems && cartStore.cartItems.length > 0">
+            <div
+              class="d-flex justify-content-between align-items-center mb-2"
+              v-for="item in cartStore.cartItems"
+              :key="item.id"
+            >
+              <span class="fw-medium">{{ item.name }}</span>
               <div class="d-flex align-items-center gap-3">
-                <span class="text-body-secondary">quantity x</span>
-                <span class="fw-medium">$ </span>
+                <span class="text-body-secondary">{{ item.quantity }} x</span>
+                <span class="fw-medium">${{ item.price.toFixed(2) }}</span>
               </div>
             </div>
             <div class="border-top pt-3 mt-3">
               <div class="d-flex justify-content-between align-items-center">
                 <span class="fw-bold">Total</span>
-                <span class="fw-bold fs-5">$</span>
+                <span class="fw-bold fs-5">${{ cartStore.cartTotal.toFixed(2) }}</span>
               </div>
             </div>
           </div>
@@ -56,14 +70,18 @@
           <button type="button" @click="closeModal" class="btn btn-outline-secondary px-4">
             Cancel
           </button>
-          <button type="submit" class="btn btn-success px-4">
-            <span class="d-flex align-items-center gap-2">
+          <button
+            type="submit"
+            class="btn btn-success px-4"
+            :disabled="isSubmitting || !cartStore.cartItems || cartStore.cartItems.length === 0"
+          >
+            <span v-if="isSubmitting" class="d-flex align-items-center gap-2">
               <div class="spinner-border spinner-border-sm" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
               Processing...
             </span>
-            <span>Place Order</span>
+            <span v-else>Place Order</span>
           </button>
         </div>
       </form>
@@ -72,8 +90,20 @@
 </template>
 <script setup>
 import { ref, computed, reactive } from 'vue'
+import { useCartStore } from '@/stores/cartStore'
+const cartStore = useCartStore()
 const isSubmitting = ref(false)
 const errorList = reactive([])
+
+const orderData = reactive({
+  pickUpName: '',
+  pickUpPhoneNumber: '',
+  pickUpEmail: '',
+  applicationUserId: '',
+  orderTotal: 0,
+  totalItem: 0,
+  orderDetailsDTO: [],
+})
 
 const props = defineProps({
   isOpen: Boolean,
