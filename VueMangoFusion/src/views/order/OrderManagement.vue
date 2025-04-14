@@ -113,7 +113,7 @@
                 </div>
               </td>
               <td>
-                <button class="btn btn-sm btn-success">
+                <button class="btn btn-sm btn-success" @click="viewOrderDetails(order)">
                   <i class="bi bi-card-checklist"></i> &nbsp;View Details
                 </button>
               </td>
@@ -201,10 +201,12 @@
     </div>
 
     <!-- Order Details Modal Component -->
+    <OrderDetailsModal :order="selectedOrder" @close="closeOrderDetails"></OrderDetailsModal>
   </div>
 </template>
 
 <script setup>
+import OrderDetailsModal from '@/components/modals/OrderDetailsModal.vue'
 import { ref, onMounted, computed, reactive } from 'vue'
 import orderService from '@/services/orderService'
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
@@ -218,7 +220,7 @@ import {
 
 const orders = reactive([])
 const loading = ref(false)
-
+const selectedOrder = ref(null)
 //filter and sorting
 const statusFilter = ref('')
 const searchQuery = ref('')
@@ -226,7 +228,7 @@ const sortBy = ref('orderHeaderId')
 const sortDirection = ref('desc')
 
 //pagination
-const itemsPerPage = 2
+const itemsPerPage = 5
 const currentPage = ref(1)
 
 const resetFilters = () => {
@@ -235,6 +237,14 @@ const resetFilters = () => {
   sortBy.value = 'orderHeaderId'
   sortDirection.value = 'desc'
   currentPage.value = 1
+}
+
+const viewOrderDetails = (order) => {
+  selectedOrder.value = { ...order }
+}
+
+const closeOrderDetails = (order) => {
+  selectedOrder.value = null
 }
 
 const updateSort = (field) => {
