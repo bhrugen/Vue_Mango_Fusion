@@ -152,12 +152,25 @@
           </li>
 
           <!-- Page numbers with limited display -->
-          <li class="page-item disabled">
-            <span class="page-link border-success">...</span>
-          </li>
-          <li class="page-item">
-            <a class="page-link text-muted border-success" href="#"> XX </a>
-          </li>
+          <template v-for="pageNum in displayedPageNumber" :key="pageNum">
+            <li class="page-item disabled">
+              <span class="page-link border-success">...</span>
+            </li>
+            <li class="page-item">
+              <a
+                :class="
+                  pageNum === currentPage
+                    ? 'bg-success border-success text-white'
+                    : 'text-success border-success'
+                "
+                class="page-link border-success"
+                href="#"
+                @click="changePage(pageNum)"
+              >
+                {{ pageNum }}
+              </a>
+            </li>
+          </template>
           <!-- Next button -->
           <li class="page-item">
             <a
@@ -286,6 +299,16 @@ const changePage = (page) => {
   if (page < 1 || page > totalPages.value) return
   currentPage.value = page
 }
+
+const displayedPageNumber = computed(() => {
+  const total = totalPages.value
+  const current = currentPage.value
+  const detla = 1 //Number of pages to show before and after current page
+
+  if (total <= 5) {
+    return Array.from({ length: total }, (_, i) => i + 1)
+  }
+})
 
 const fetchOrders = async () => {
   orders.length = 0
