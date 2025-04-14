@@ -153,10 +153,10 @@
 
           <!-- Page numbers with limited display -->
           <template v-for="pageNum in displayedPageNumber" :key="pageNum">
-            <li class="page-item disabled">
+            <li class="page-item disabled" v-if="pageNum === '...'">
               <span class="page-link border-success">...</span>
             </li>
-            <li class="page-item">
+            <li class="page-item" v-else>
               <a
                 :class="
                   pageNum === currentPage
@@ -226,7 +226,7 @@ const sortBy = ref('orderHeaderId')
 const sortDirection = ref('desc')
 
 //pagination
-const itemsPerPage = 5
+const itemsPerPage = 2
 const currentPage = ref(1)
 
 const resetFilters = () => {
@@ -303,11 +303,36 @@ const changePage = (page) => {
 const displayedPageNumber = computed(() => {
   const total = totalPages.value
   const current = currentPage.value
-  const detla = 1 //Number of pages to show before and after current page
+  const delta = 1 //Number of pages to show before and after current page
 
   if (total <= 5) {
     return Array.from({ length: total }, (_, i) => i + 1)
   }
+
+  let range = []
+
+  //always want to include first page
+  range.push(1)
+
+  const rangeStart = Math.max(2, current - delta)
+  const rangeEnd = Math.min(total - 1, current + delta)
+
+  if (rangeStart > 2) {
+    range.push('...')
+  }
+
+  for (let i = rangeStart; i <= rangeEnd; i++) {
+    range.push(i)
+  }
+
+  if (rangeEnd < total - 1) {
+    range.push('...')
+  }
+  if (total > 1) {
+    range.push(total)
+  }
+
+  return range
 })
 
 const fetchOrders = async () => {
