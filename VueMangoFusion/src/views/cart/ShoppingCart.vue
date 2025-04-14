@@ -106,7 +106,7 @@
                     <span class="fw-bold">Total:</span>
                     <span class="fw-bold text-success">${{ cartStore.cartTotal.toFixed(2) }}</span>
                   </div>
-                  <button class="btn btn-success w-100">
+                  <button class="btn btn-success w-100" @click="checkout">
                     <i class="bi bi-cash-stack"></i>
                     Proceed to Checkout
                   </button>
@@ -120,7 +120,7 @@
         </div>
       </div>
     </div>
-    <PlaceOrderModal></PlaceOrderModal>
+    <PlaceOrderModal :is-open="showOrderModal" @close="showOrderModal = false"></PlaceOrderModal>
   </div>
 </template>
 
@@ -131,11 +131,21 @@ import { CONFIG_IMAGE_URL } from '@/constants/config'
 import { computed, ref } from 'vue'
 import { useCartStore } from '@/stores/cartStore'
 import { useRouter } from 'vue-router'
+import { useSwal } from '@/composables/swal'
+const { showError } = useSwal()
 const router = useRouter()
 const cartStore = useCartStore()
-
+const showOrderModal = ref(false)
 const removeItem = (itemId) => {
   cartStore.removeFromCart(itemId)
+}
+
+const checkout = () => {
+  if (cartStore.cartCount.value === 0) {
+    showError('Cart is Empty.')
+    return
+  }
+  showOrderModal.value = true
 }
 
 const continueShopping = () => {
