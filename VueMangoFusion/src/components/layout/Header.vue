@@ -80,7 +80,7 @@
               ></router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!authStore.isAuthenticated">
             <router-link
               class="nav-link"
               aria-current="page"
@@ -88,7 +88,7 @@
               >Sign In</router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!authStore.isAuthenticated">
             <router-link
               class="nav-link"
               aria-current="page"
@@ -96,7 +96,7 @@
               >Sign Up</router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="authStore.isAuthenticated">
             <button class="nav-link px-2" aria-current="page">Logout</button>
           </li>
 
@@ -141,6 +141,8 @@
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 import { useThemeStore } from '@/stores/themeStore'
 import { useCartStore } from '@/stores/cartStore'
+import { useAuthStore } from '@/stores/authStore'
 const cartStore = useCartStore()
+const authStore = useAuthStore()
 const themeStore = useThemeStore()
 </script>
