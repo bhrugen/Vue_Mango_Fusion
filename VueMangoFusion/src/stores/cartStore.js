@@ -26,6 +26,24 @@ export const useCartStore = defineStore('cartStore', () => {
     }
   }
 
+  function updateQuantity(itemId, quantity) {
+    const item = cartItems.find((item) => item.id === itemId)
+    if (item) {
+      if (quantity <= 0) {
+        removeFromCart(itemId)
+      } else {
+        item.quantity = quantity
+      }
+    }
+  }
+
+  function removeFromCart(itemId) {
+    const itemIndex = cartItems.findIndex((item) => item.id === itemId)
+    if (itemIndex !== -1) {
+      cartItems.splice(itemIndex, 1)
+    }
+  }
+
   function clearCart() {
     cartItems = []
   }
@@ -36,5 +54,7 @@ export const useCartStore = defineStore('cartStore', () => {
     cartTotal,
     addToCart,
     clearCart,
+    removeFromCart,
+    updateQuantity,
   }
 })

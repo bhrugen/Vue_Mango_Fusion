@@ -62,7 +62,7 @@
           </button>
 
           <div class="input-group input-group-sm w-100" v-else>
-            <button class="btn btn-outline-secondary" type="button">
+            <button class="btn btn-outline-secondary" type="button" @click="decreaseQuantity">
               <i class="bi bi-dash"></i>
             </button>
             <input
@@ -72,7 +72,7 @@
               :value="itemQuantity"
               style="max-width: 50px"
             />
-            <button class="btn btn-outline-secondary" type="button">
+            <button class="btn btn-outline-secondary" type="button" @click="increaseQuantity">
               <i class="bi bi-plus"></i>
             </button>
           </div>
@@ -102,5 +102,16 @@ const addToCart = () => {
     cartStore.addToCart(props.menuItem)
     isProcessing.value = false
   }, 300)
+}
+
+const increaseQuantity = () => {
+  cartStore.updateQuantity(props.menuItem.id, itemQuantity.value + 1)
+}
+const decreaseQuantity = () => {
+  if (itemQuantity.value > 1) {
+    cartStore.updateQuantity(props.menuItem.id, itemQuantity.value - 1)
+  } else {
+    cartStore.removeFromCart(props.menuItem.id)
+  }
 }
 </script>
