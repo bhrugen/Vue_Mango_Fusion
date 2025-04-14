@@ -24,4 +24,26 @@ export default {
       throw error
     }
   },
+
+  async signIn(userData) {
+    try {
+      const response = await api.post('/auth/login', {
+        email: userData.email,
+        password: userData.password,
+      })
+      console.log('Response LOGIN', response.data)
+
+      if (response.data.isSuccess) {
+        return {
+          success: true,
+          message: 'Login successful',
+        }
+      } else {
+        throw new Error('Login failed')
+      }
+    } catch (error) {
+      console.error('Error in Login:', error)
+      throw error
+    }
+  },
 }

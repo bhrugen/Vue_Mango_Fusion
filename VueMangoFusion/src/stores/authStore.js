@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import authService from '@/services/authService'
 import router from '@/router/routes'
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
-
+import { useSwal } from '@/composables/swal'
 export const useAuthStore = defineStore('authStore', () => {
   //state
   const user = reactive({
@@ -25,10 +25,28 @@ export const useAuthStore = defineStore('authStore', () => {
   async function signUp(userData) {
     try {
       await authService.signUp(userData)
+      const { showSuccess } = useSwal()
+      showSuccess('Registeration Successful')
+      router.push({ name: APP_ROUTE_NAMES.SIGN_IN })
     } catch (err) {
       return {
         success: false,
         message: err.response?.data?.errorMessages?.join('--') || 'Registeration Failed',
+      }
+    }
+  }
+
+  async function signIn(userData) {
+    try {
+      const response = await authService.signIn(userData)
+      console.log(response)
+      //const { showSuccess } = useSwal()
+      //showSuccess('Registeration Successful')
+      //router.push({ name: APP_ROUTE_NAMES.SIGN_IN })
+    } catch (err) {
+      return {
+        success: false,
+        message: err.response?.data?.errorMessages?.join('--') || 'Login Failed',
       }
     }
   }
@@ -38,5 +56,6 @@ export const useAuthStore = defineStore('authStore', () => {
     isAuthenticated,
     getUserInfo,
     signUp,
+    signIn,
   }
 })
