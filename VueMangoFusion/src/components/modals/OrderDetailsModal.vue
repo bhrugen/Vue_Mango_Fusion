@@ -213,7 +213,8 @@ import {
   ORDER_STATUS_READY_FOR_PICKUP,
 } from '@/constants/constants'
 import orderService from '@/services/orderService'
-
+import { useSwal } from '@/composables/swal'
+const { showSuccess } = useSwal()
 const props = defineProps({
   order: {
     type: Object,
@@ -231,7 +232,7 @@ const props = defineProps({
     }),
   },
 })
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'status-updated'])
 const closeModal = () => {
   emit('close')
 }
@@ -255,6 +256,10 @@ const updateStatus = async (newStatus) => {
       orderHeaderId: props.order.orderHeaderId,
       status: newStatus,
     })
+
+    showSuccess('Order updated successfully')
+    closeModal()
+    emit('status-updated')
   } catch (error) {
     console.error('Error updating status', error)
   }

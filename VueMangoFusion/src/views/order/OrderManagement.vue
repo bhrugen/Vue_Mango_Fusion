@@ -201,7 +201,11 @@
     </div>
 
     <!-- Order Details Modal Component -->
-    <OrderDetailsModal :order="selectedOrder" @close="closeOrderDetails"></OrderDetailsModal>
+    <OrderDetailsModal
+      :order="selectedOrder"
+      @close="closeOrderDetails"
+      @status-updated="fetchOrders"
+    ></OrderDetailsModal>
   </div>
 </template>
 
