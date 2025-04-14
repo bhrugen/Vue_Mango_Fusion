@@ -57,7 +57,7 @@ export default {
   },
   async updateOrder(id, orderData) {
     try {
-      const response = await api.put(`/OrderHeader?id=${id}`, {
+      const response = await api.put(`/OrderHeader/${id}`, {
         orderHeaderId: id,
         status: orderData.status,
       })

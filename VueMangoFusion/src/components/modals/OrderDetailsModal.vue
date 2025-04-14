@@ -139,7 +139,14 @@
               <div
                 class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2 mb-3"
               >
-                <button class="btn btn-success flex-fill" :disabled="">
+                <button
+                  :class="[
+                    'btn btn-success flex-fill',
+                    order.status === ORDER_STATUS_CONFIRMED ? 'active' : '',
+                    isStatusDisabled(ORDER_STATUS_COMPLETED) ? 'opacity-50' : '',
+                  ]"
+                  :disabled="isStatusDisabled(ORDER_STATUS_CONFIRMED)"
+                >
                   <i class="bi bi-clock me-1"></i>
                   <span class="small">Confirmed</span>
                 </button>
@@ -148,7 +155,15 @@
                   <i class="bi bi-arrow-right"></i>
                 </div>
 
-                <button class="btn btn-success flex-fill">
+                <button
+                  :class="[
+                    'btn btn-success flex-fill',
+                    order.status === ORDER_STATUS_READY_FOR_PICKUP ? 'active' : '',
+                    isStatusDisabled(ORDER_STATUS_READY_FOR_PICKUP) ? 'opacity-50' : '',
+                  ]"
+                  @click="updateStatus(ORDER_STATUS_READY_FOR_PICKUP)"
+                  :disabled="isStatusDisabled(ORDER_STATUS_READY_FOR_PICKUP)"
+                >
                   <i class="bi bi-gear me-1"></i>
                   <span class="small">Ready for Pickup</span>
                 </button>
@@ -157,14 +172,26 @@
                   <i class="bi bi-arrow-right"></i>
                 </div>
 
-                <button class="'btn btn-success flex-fill',">
+                <button
+                  :class="[
+                    'btn btn-success flex-fill',
+                    order.status === ORDER_STATUS_COMPLETED ? 'active' : '',
+                    isStatusDisabled(ORDER_STATUS_COMPLETED) ? 'opacity-50' : '',
+                  ]"
+                  @click="updateStatus(ORDER_STATUS_COMPLETED)"
+                  :disabled="isStatusDisabled(ORDER_STATUS_COMPLETED)"
+                >
                   <i class="bi bi-check-circle me-1"></i>
                   <span class="small">Completed</span>
                 </button>
               </div>
 
               <!-- Cancel Button -->
-              <button class="btn btn-outline-danger w-100">
+              <button
+                class="btn btn-outline-danger w-100"
+                @click="updateStatus(ORDER_STATUS_CANCELLED)"
+                :disabled="isStatusDisabled(ORDER_STATUS_CANCELLED)"
+              >
                 <i class="bi bi-x-circle me-1"></i>
                 <span class="small">Cancel Order</span>
               </button>
