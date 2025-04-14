@@ -85,7 +85,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="order in filteredOrders" :key="order.orderHeaderId">
+            <tr v-for="order in paginatedOrders" :key="order.orderHeaderId">
               <td>#{{ order.orderHeaderId }}</td>
               <td>{{ order.pickUpName }}</td>
               <td>
@@ -127,7 +127,12 @@
         <ul class="pagination pagination-md">
           <!-- First page button -->
           <li class="page-item">
-            <a class="page-link text-success border-success" href="#" aria-label="First">
+            <a
+              class="page-link text-success border-success"
+              href="#"
+              aria-label="First"
+              @click="changePage(1)"
+            >
               <span aria-hidden="true">&laquo;</span>
               <span class="visually-hidden">First page</span>
             </a>
@@ -135,7 +140,12 @@
 
           <!-- Previous button -->
           <li class="page-item">
-            <a class="page-link text-success border-success" href="#" aria-label="Previous">
+            <a
+              class="page-link text-success border-success"
+              href="#"
+              aria-label="Previous"
+              @click="changePage(currentPage - 1)"
+            >
               <span aria-hidden="true">&lsaquo;</span>
               <span class="visually-hidden">Previous page</span>
             </a>
@@ -150,7 +160,12 @@
           </li>
           <!-- Next button -->
           <li class="page-item">
-            <a class="page-link text-success border-success" href="#" aria-label="Next">
+            <a
+              class="page-link text-success border-success"
+              href="#"
+              aria-label="Next"
+              @click="changePage(currentPage + 1)"
+            >
               <span aria-hidden="true">&rsaquo;</span>
               <span class="visually-hidden">Next page</span>
             </a>
@@ -158,7 +173,12 @@
 
           <!-- Last page button -->
           <li class="page-item">
-            <a class="page-link text-success border-success" href="#" aria-label="Last">
+            <a
+              class="page-link text-success border-success"
+              href="#"
+              aria-label="Last"
+              @click="changePage(totalPages)"
+            >
               <span aria-hidden="true">&raquo;</span>
               <span class="visually-hidden">Last page</span>
             </a>
@@ -251,6 +271,21 @@ const filteredOrders = computed(() => {
 
   return result
 })
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredOrders.value.length / itemsPerPage)
+})
+
+const paginatedOrders = computed(() => {
+  const startIndex = (currentPage.value - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  return filteredOrders.value.slice(startIndex, endIndex)
+})
+
+const changePage = (page) => {
+  if (page < 1 || page > totalPages.value) return
+  currentPage.value = page
+}
 
 const fetchOrders = async () => {
   orders.length = 0
