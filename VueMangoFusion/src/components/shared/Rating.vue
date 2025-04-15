@@ -10,13 +10,19 @@
         :class="{ 'cursor-pointer': !readonly }"
       >
         <i
-          :class="rating && rating >= star ? 'bi-star-fill' : 'bi-star'"
+          :class="
+            rating && Math.round(rating * 2) / 2 >= star
+              ? 'bi-star-fill'
+              : Math.round(rating * 2) / 2 >= star - 0.5
+                ? 'bi-star-half'
+                : 'bi-star'
+          "
           class="text-warning"
           width="16"
         ></i>
       </div>
     </div>
-    <div v-if="rating" class="ms-2 text-secondary small">({{ rating }})</div>
+    <div v-if="rating" class="ms-2 text-secondary small">({{ rating.toFixed(1) }})</div>
     <div
       v-if="isProcessing"
       class="spinner-border spinner-border-sm text-warning ms-2"

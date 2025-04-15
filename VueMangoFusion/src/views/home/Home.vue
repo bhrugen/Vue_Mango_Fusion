@@ -92,7 +92,10 @@
             @show-details="handleShowDetails"
           ></MenuItemCard>
 
-          <div class="text-center py-5 display-4 mx-auto text-body-secondary mb-3 d-block">
+          <div
+            v-if="filteredItems.length === 0"
+            class="text-center py-5 display-4 mx-auto text-body-secondary mb-3 d-block"
+          >
             <i class="bi bi-emoji-frown"></i>
             <p class="lead text-body-secondary">No menu items found matching your criteria</p>
           </div>
