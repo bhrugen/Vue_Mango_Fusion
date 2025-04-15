@@ -37,7 +37,11 @@
           <i class="bi bi-card-list text-success pe-2"></i>
           <h6 class="mb-0">Order Items</h6>
         </div>
-        <div class="mb-3" v-for="item in order.orderDetails" :key="item.orderDetailId">
+        <div
+          class="mb-3 pb-2 border-bottom"
+          v-for="item in order.orderDetails"
+          :key="item.orderDetailId"
+        >
           <div class="d-flex justify-content-between align-items-center mb-2">
             <div class="d-flex align-items-center">
               <span class="text-truncate me-3">{{ item.menuItem.name }}</span>
@@ -47,6 +51,7 @@
               <span class="text-body-secondary">${{ item.price }}</span>
             </div>
           </div>
+          <Rating></Rating>
         </div>
       </div>
     </div>
@@ -54,6 +59,7 @@
 </template>
 
 <script setup>
+import Rating from '../shared/Rating.vue'
 const props = defineProps({
   order: {
     type: Object,
