@@ -51,7 +51,7 @@
               <span class="text-body-secondary">${{ item.price }}</span>
             </div>
           </div>
-          <Rating @rate="onRateItem" :item-id="item.orderDetailId"></Rating>
+          <Rating @rate="onRateItem" :rating="item.rating" :item-id="item.orderDetailId"></Rating>
         </div>
       </div>
     </div>

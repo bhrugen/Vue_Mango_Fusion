@@ -3,7 +3,11 @@
     <small class="text-secondary me-2">Rate this item:</small>
     <div class="d-flex">
       <div v-for="star in 5" :key="star" class="star-rating me-1" @click="onRatingUpdate(star)">
-        <i class="bi-star text-warning" width="16"></i>
+        <i
+          :class="rating && rating >= star ? 'bi-star-fill' : 'bi-star'"
+          class="text-warning"
+          width="16"
+        ></i>
       </div>
     </div>
 
@@ -30,6 +34,10 @@ const props = defineProps({
   itemId: {
     type: [Number],
     required: true,
+  },
+  rating: {
+    type: [Number],
+    default: 0,
   },
 })
 const onRatingUpdate = async (newRating) => {
