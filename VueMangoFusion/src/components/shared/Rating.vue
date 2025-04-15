@@ -10,7 +10,7 @@
         ></i>
       </div>
     </div>
-
+    <div v-if="rating" class="ms-2 text-secondary small">({{ rating }})</div>
     <div
       v-if="isProcessing"
       class="spinner-border spinner-border-sm text-warning ms-2"
