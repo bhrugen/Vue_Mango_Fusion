@@ -72,4 +72,21 @@ export default {
       throw error
     }
   },
+  async submitRating(orderDetailsId, rating) {
+    try {
+      const response = await api.put(`/OrderDetails/${orderDetailsId}`, {
+        orderDetailsId: orderDetailsId,
+        rating: rating,
+      })
+
+      if (response.data.isSuccess) {
+        return response.data.result
+      } else {
+        throw new Error('Failed to update rating')
+      }
+    } catch (error) {
+      console.error('Error updating rating:', error)
+      throw error
+    }
+  },
 }
