@@ -59,7 +59,13 @@
                   </div>
                   <h4 class="fw-bold mb-0 fs-5 fs-sm-4">{{ menuItem.name }}</h4>
                 </div>
-
+                <div class="">
+                  <Rating
+                    :rating="menuItem.rating"
+                    :item-id="menuItem.id"
+                    :readonly="true"
+                  ></Rating>
+                </div>
                 <!-- Category -->
                 <div>
                   <div class="text-secondary small mb-1">
@@ -115,6 +121,7 @@
 </template>
 
 <script setup>
+import Rating from '../shared/Rating.vue'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
 const props = defineProps({
   show: Boolean,
