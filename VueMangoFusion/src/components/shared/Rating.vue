@@ -2,7 +2,7 @@
   <div class="d-flex align-items-center">
     <small class="text-secondary me-2">Rate this item:</small>
     <div class="d-flex">
-      <div v-for="star in 5" :key="star" class="star-rating me-1">
+      <div v-for="star in 5" :key="star" class="star-rating me-1" @click="onRatingUpdate(star)">
         <i class="bi-star text-warning" width="16"></i>
       </div>
     </div>
@@ -16,7 +16,33 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+const isProcessing = ref(false)
+const isRatingSuccessful = ref(false)
+const emit = defineEmits(['rate'])
+
+const props = defineProps({
+  itemId: {
+    type: [Number],
+    required: true,
+  },
+})
+const onRatingUpdate = async (newRating) => {
+  isProcessing = true
+  isRatingSuccessful = false
+
+  emit('rate', props.itemId, newRating)
+
+  isRatingSuccessful.value = true
+
+  setTimeout(() => {
+    isRatingSuccessful = false
+  }, 2000)
+
+  isProcessing = false
+}
+</script>
 
 <style scoped>
 .star-rating {

@@ -51,7 +51,7 @@
               <span class="text-body-secondary">${{ item.price }}</span>
             </div>
           </div>
-          <Rating></Rating>
+          <Rating @rate="onRateItem" :item-id="item.orderDetailId"></Rating>
         </div>
       </div>
     </div>
@@ -60,10 +60,16 @@
 
 <script setup>
 import Rating from '../shared/Rating.vue'
+
+const emit = defineEmits(['rate'])
 const props = defineProps({
   order: {
     type: Object,
     required: true,
   },
 })
+
+const onRateItem = (itemId, rating) => {
+  emit('rate', itemId, rating)
+}
 </script>
