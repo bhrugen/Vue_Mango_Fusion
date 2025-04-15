@@ -70,6 +70,7 @@ const props = defineProps({
 })
 
 const onRateItem = (itemId, rating) => {
+  console.log('OrderLIstCard', itemId)
   emit('rate', itemId, rating)
 }
 </script>

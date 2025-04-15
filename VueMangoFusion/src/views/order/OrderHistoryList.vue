@@ -61,6 +61,7 @@ onMounted(fetchOrders)
 
 const rateItem = async (orderDetailId, rating) => {
   try {
+    console.log('Order History', orderDetailId)
     var result = await orderService.submitRating(orderDetailId, rating)
 
     const orderDetail = orders

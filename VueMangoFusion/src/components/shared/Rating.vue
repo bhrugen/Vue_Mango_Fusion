@@ -7,10 +7,14 @@
       </div>
     </div>
 
-    <div class="spinner-border spinner-border-sm text-warning ms-2" role="status">
+    <div
+      v-if="isProcessing"
+      class="spinner-border spinner-border-sm text-warning ms-2"
+      role="status"
+    >
       <span class="visually-hidden">Rating...</span>
     </div>
-    <div class="text-success ms-2">
+    <div class="text-success ms-2" v-if="isRatingSuccessful">
       <i class="bi bi-check-circle-fill"></i>
     </div>
   </div>
@@ -29,18 +33,18 @@ const props = defineProps({
   },
 })
 const onRatingUpdate = async (newRating) => {
-  isProcessing = true
-  isRatingSuccessful = false
-
+  isProcessing.value = true
+  isRatingSuccessful.value = false
+  console.log('Rating', props.itemId)
   emit('rate', props.itemId, newRating)
 
   isRatingSuccessful.value = true
 
   setTimeout(() => {
-    isRatingSuccessful = false
+    isRatingSuccessful.value = false
   }, 2000)
 
-  isProcessing = false
+  isProcessing.value = false
 }
 </script>
 
